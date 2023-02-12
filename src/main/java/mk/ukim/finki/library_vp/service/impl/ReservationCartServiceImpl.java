@@ -8,7 +8,6 @@ import mk.ukim.finki.library_vp.model.exceptions.BookNotFoundException;
 import mk.ukim.finki.library_vp.model.exceptions.ReservationCartNotFoundException;
 import mk.ukim.finki.library_vp.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.library_vp.repository.BookRepository;
-import mk.ukim.finki.library_vp.repository.ReservationCartBooksRepository;
 import mk.ukim.finki.library_vp.repository.ReservationCartRepository;
 import mk.ukim.finki.library_vp.repository.UserRepository;
 import mk.ukim.finki.library_vp.service.ReservationCartService;
@@ -31,13 +30,11 @@ public class ReservationCartServiceImpl implements ReservationCartService {
     }
 
 
-
     @Override
     public ReservationCart findCartByUser(User user) {
         if (reservationCartRepository.findReservationCartByUser(user) != null) {
             return reservationCartRepository.findReservationCartByUser(user);
-        }
-        else
+        } else
             return reservationCartRepository.save(new ReservationCart(user));
     }
 
@@ -53,8 +50,6 @@ public class ReservationCartServiceImpl implements ReservationCartService {
         ReservationCart reservationCart = this.reservationCartRepository.
                 findReservationCartByUser(user);
         return reservationCart;
-
-
     }
 
     @Override
@@ -62,7 +57,7 @@ public class ReservationCartServiceImpl implements ReservationCartService {
         ReservationCart reservationCart = this.getActiveReservationCart(username);
         Book book = this.bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
-        if(reservationCart.getBooks()
+        if (reservationCart.getBooks()
                 .stream().filter(i -> i.getId().equals(bookId))
                 .collect(Collectors.toList()).size() > 0)
             throw new BookAlreadyInReservationCartException(bookId, username);
@@ -74,23 +69,19 @@ public class ReservationCartServiceImpl implements ReservationCartService {
 
     @Override
     public List<Book> listAllBooksInReservationCart(Long cartId) {
-        if(!this.reservationCartRepository.findById(cartId).isPresent())
+        if (!this.reservationCartRepository.findById(cartId).isPresent())
             throw new ReservationCartNotFoundException(cartId);
         return this.reservationCartRepository.findById(cartId).get().getBooks();
-
     }
 
     @Override
     public void checkout(Long id) {
         List<Book> books = this.bookRepository.findAll();
 
-        for(int i = 0; i < books.size(); i++) {
+        for (int i = 0; i < books.size(); i++) {
             books.get(i).setStock(books.get(i).getStock() + 1);
         }
-
-        books = this.bookRepository.saveAll(books);
-
+        this.bookRepository.saveAll(books);
     }
-
 
 }

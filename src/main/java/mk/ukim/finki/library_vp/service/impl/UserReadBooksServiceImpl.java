@@ -2,9 +2,10 @@ package mk.ukim.finki.library_vp.service.impl;
 
 import mk.ukim.finki.library_vp.model.Book;
 import mk.ukim.finki.library_vp.model.User;
-import mk.ukim.finki.library_vp.model.exceptions.*;
+import mk.ukim.finki.library_vp.model.exceptions.BookAlreadyInProfileException;
+import mk.ukim.finki.library_vp.model.exceptions.BookNotFoundException;
+import mk.ukim.finki.library_vp.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.library_vp.repository.BookRepository;
-import mk.ukim.finki.library_vp.repository.UserReadBooksRepository;
 import mk.ukim.finki.library_vp.repository.UserRepository;
 import mk.ukim.finki.library_vp.service.UserReadBooksService;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,5 @@ public class UserReadBooksServiceImpl implements UserReadBooksService {
         if(!this.userRepository.findByUsername(username).isPresent())
             throw new UserNotFoundException(username);
         return this.userRepository.findByUsername(username).get().getReadBooks();
-
     }
-
-
 }

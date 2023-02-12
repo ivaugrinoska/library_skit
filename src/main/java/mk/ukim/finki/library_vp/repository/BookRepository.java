@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+
     List<Book> findAllByAuthorContainingOrNameContaining(String text, String sameText);
 
     List<Book> findAllByCategory(Category category);
@@ -24,6 +25,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Book findBookByName(String name);
 
     List<Book> findAllByOrderByCategoryAsc();
-
 
 }

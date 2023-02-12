@@ -1,13 +1,11 @@
 package mk.ukim.finki.library_vp.web;
 
-
 import mk.ukim.finki.library_vp.model.Book;
 import mk.ukim.finki.library_vp.model.Category;
 import mk.ukim.finki.library_vp.model.User;
 import mk.ukim.finki.library_vp.service.CategoryService;
 import mk.ukim.finki.library_vp.service.impl.BookServiceImpl;
 import mk.ukim.finki.library_vp.service.impl.ReviewServiceImpl;
-import mk.ukim.finki.library_vp.service.impl.UserServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +26,6 @@ public class BookController {
         this.bookService = bookService;
         this.categoryService = categoryService;
         this.reviewService = reviewService;
-
     }
 
     @GetMapping("/topRated")
@@ -45,17 +42,15 @@ public class BookController {
         Book selectedBook = bookService.findBookById(id);
         model.addAttribute("selectedBook", selectedBook);
         model.addAttribute("reviews", this.reviewService.findReviewsByBook(selectedBook));
-        model.addAttribute("relatedBooks",this.
+        model.addAttribute("relatedBooks", this.
                 bookService.findFirst3(selectedBook.getCategory()));
         model.addAttribute("bodyContent", "bookDetails");
         return "master-template";
 
     }
 
-
     @GetMapping("/search")
     public String searchAuthorOrTitle(@RequestParam String authorOrTitle, Model model) {
-        String x = authorOrTitle;
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("books", bookService.searchByTitleOrAuthor(authorOrTitle));
         model.addAttribute("bodyContent", "searchBooks");

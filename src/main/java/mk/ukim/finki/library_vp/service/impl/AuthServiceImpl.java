@@ -6,17 +6,17 @@ import mk.ukim.finki.library_vp.model.exceptions.InvalidUserCredentialsException
 import mk.ukim.finki.library_vp.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.library_vp.repository.UserRepository;
 import mk.ukim.finki.library_vp.service.AuthService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class  AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
     public AuthServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     @Override
     public User login(String username, String password) {
@@ -36,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
         user.setName(name);
         user.setSurname(surname);
 
-        return this.userRepository.save(user);
+        this.userRepository.save(user);
+        return user;
     }
 }

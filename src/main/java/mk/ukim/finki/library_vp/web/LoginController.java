@@ -31,7 +31,7 @@ public class LoginController {
                         @RequestParam String username,
                         @RequestParam String password,
                         Model model) {
-        User user = null;
+        User user;
         try{
             user = this.authService.login(username, password);
             request.getSession().setAttribute("user", user);
